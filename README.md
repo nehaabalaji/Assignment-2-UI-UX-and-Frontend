@@ -152,10 +152,9 @@ The team will follow an **iterative, incremental development** process:
 
 ## Team
 
-*(Add team member names and roles.)*
-
 | Name | Role |
 |------|------|
-| _Member 1_ | _e.g., Backend_ |
-| _Member 2_ | _e.g., Frontend_ |
-| _Member 3_ | _e.g., Design / Docs_ |
+| Vasavi Chenna|----------|
+| Nehaa Balaji|-----------|
+| Samuel Parsons|---------|
+| Mahmoud Masoud|---------|
