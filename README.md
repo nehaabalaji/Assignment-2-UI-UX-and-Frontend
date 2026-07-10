@@ -140,8 +140,6 @@ The team will follow an **iterative, incremental development** process:
 
 ## Technology Stack
 
-*(Update this section with your team's chosen tools.)*
-
 | Layer | Technology |
 |-------|------------|
 | Frontend | _e.g., React / React Native_ |
