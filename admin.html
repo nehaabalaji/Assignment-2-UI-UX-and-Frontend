@@ -1,0 +1,367 @@
+<!-- Admin screens (Dashboard + Service Management) - Samuel Parsons -->
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin | QueueSmart</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      body { font-family: "Inter", system-ui, sans-serif; background: #f1f5f9; color: #0f172a; }
+      button { font-family: inherit; }
+
+      .app { min-height: 100vh; display: flex; }
+
+      /* Sidebar */
+      .sidebar {
+        width: 248px; background: #fff; border-right: 1px solid #e8edf3;
+        display: flex; flex-direction: column; padding: 24px 16px;
+        position: sticky; top: 0; height: 100vh; flex-shrink: 0;
+      }
+      .brand { display: flex; gap: 12px; align-items: center; padding: 0 8px 24px; }
+      .logo {
+        width: 40px; height: 40px; border-radius: 12px; background: #0f766e;
+        color: #fff; display: grid; place-items: center; font-weight: 800; font-size: 20px;
+      }
+      .brand-name { font-weight: 800; font-size: 17px; }
+      .brand-sub { font-size: 12px; color: #94a3b8; font-weight: 500; }
+      .nav { display: flex; flex-direction: column; gap: 4px; flex: 1; }
+      .nav-btn {
+        position: relative; display: flex; align-items: center; gap: 12px;
+        padding: 11px 14px; border-radius: 10px; border: none; cursor: pointer;
+        font-size: 14.5px; text-align: left; width: 100%; background: transparent;
+        color: #64748b; font-weight: 500;
+      }
+      .nav-btn:hover { background: #f8fafc; }
+      .nav-btn.on { background: #f0fdfa; color: #0f766e; font-weight: 700; }
+      .nav-btn.on::before {
+        content: ""; position: absolute; left: 0; top: 10px; bottom: 10px;
+        width: 3px; border-radius: 3px; background: #0f766e;
+      }
+      .nav-btn svg { width: 19px; height: 19px; flex-shrink: 0; }
+      .side-foot {
+        display: flex; gap: 10px; align-items: center; padding: 14px 8px 0;
+        border-top: 1px solid #eef2f6;
+      }
+      .avatar {
+        width: 36px; height: 36px; border-radius: 10px; background: #e2e8f0;
+        display: grid; place-items: center; font-weight: 700; font-size: 13px; color: #475569;
+      }
+      .avatar-name { font-weight: 700; font-size: 13.5px; }
+      .avatar-sub { font-size: 12px; color: #94a3b8; }
+
+      /* Content */
+      .content { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+      .topbar {
+        height: 64px; display: flex; justify-content: space-between; align-items: center;
+        padding: 0 32px; background: #fff; border-bottom: 1px solid #e8edf3;
+        position: sticky; top: 0; z-index: 5;
+      }
+      .crumb { font-weight: 700; font-size: 15px; }
+      .bell {
+        position: relative; width: 38px; height: 38px; border-radius: 10px;
+        background: #f8fafc; display: grid; place-items: center; color: #475569;
+        cursor: pointer; border: none;
+      }
+      .bell-dot {
+        position: absolute; top: 9px; right: 10px; width: 8px; height: 8px;
+        border-radius: 8px; background: #f43f5e; border: 2px solid #fff;
+      }
+
+      .main { flex: 1; overflow-y: auto; }
+      .page { padding: 32px; max-width: 880px; margin: 0 auto; width: 100%; }
+      h1 { font-size: 28px; font-weight: 800; margin-bottom: 4px; letter-spacing: -0.02em; }
+      .sub { font-size: 15px; color: #64748b; margin-bottom: 24px; }
+      .section-label {
+        font-size: 12px; font-weight: 700; text-transform: uppercase;
+        letter-spacing: 0.07em; color: #94a3b8; margin: 4px 0 14px;
+      }
+
+      /* Admin dashboard service rows */
+      .svc-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 28px; }
+      .svc-row {
+        display: flex; justify-content: space-between; align-items: center;
+        background: #fff; border: 1px solid #eef2f6; border-radius: 16px; padding: 18px 20px;
+      }
+      .svc-info { min-width: 0; }
+      .svc-name { font-weight: 700; font-size: 15.5px; margin-bottom: 8px; }
+      .svc-pills { display: flex; gap: 8px; flex-wrap: wrap; }
+      .pill {
+        display: inline-flex; align-items: center; gap: 4px; font-size: 12px;
+        font-weight: 600; color: #0f766e; background: #f0fdfa; padding: 5px 9px; border-radius: 8px;
+      }
+      .pill svg { width: 12px; height: 12px; }
+      .svc-actions { display: flex; align-items: center; gap: 14px; flex-shrink: 0; }
+      .status-tag {
+        font-size: 12px; font-weight: 700; padding: 5px 11px; border-radius: 20px;
+      }
+      .status-open { background: #f0fdfa; color: #0f766e; }
+      .status-closed { background: #fef2f2; color: #dc2626; }
+      .toggle-btn {
+        border: 1.5px solid #e2e8f0; background: #fff; color: #0f172a;
+        border-radius: 10px; padding: 9px 16px; font-weight: 700; font-size: 13.5px; cursor: pointer;
+      }
+      .toggle-btn:hover { border-color: #0f766e; }
+
+      /* Form */
+      .form-card {
+        background: #fff; border: 1px solid #eef2f6; border-radius: 20px; padding: 28px;
+      }
+      .form-summary {
+        display: none; background: #fef2f2; border: 1px solid #fecaca; color: #b91c1c;
+        border-radius: 12px; padding: 12px 16px; margin-bottom: 20px; font-size: 13.5px;
+      }
+      .form-summary.show { display: block; }
+      .form-summary ul { margin: 6px 0 0 18px; }
+      .field { margin-bottom: 18px; }
+      .field label { display: block; font-weight: 600; font-size: 14px; margin-bottom: 6px; }
+      .field .hint { font-weight: 400; color: #94a3b8; font-size: 12.5px; }
+      .field input, .field textarea, .field select {
+        width: 100%; padding: 11px 13px; font-size: 14.5px; font-family: inherit;
+        border: 1.5px solid #e2e8f0; border-radius: 10px; background: #fff; color: #0f172a;
+      }
+      .field textarea { resize: vertical; min-height: 84px; }
+      .field input:focus, .field textarea:focus, .field select:focus {
+        outline: none; border-color: #0f766e; box-shadow: 0 0 0 3px rgba(15,118,110,0.12);
+      }
+      .field.invalid input, .field.invalid textarea, .field.invalid select { border-color: #dc2626; }
+      .field.invalid input:focus, .field.invalid textarea:focus, .field.invalid select:focus {
+        box-shadow: 0 0 0 3px rgba(220,38,38,0.12);
+      }
+      .field-error { color: #dc2626; font-size: 12.5px; min-height: 16px; margin-top: 5px; }
+      .char-count { float: right; font-size: 12px; color: #94a3b8; font-weight: 500; }
+      .primary {
+        background: #0f766e; color: #fff; border: none; border-radius: 12px;
+        padding: 12px 26px; font-weight: 700; font-size: 14.5px; cursor: pointer;
+      }
+      .primary:hover { background: #0d5f58; }
+      .form-success {
+        display: none; align-items: center; gap: 10px; background: #f0fdfa;
+        border: 1px solid #99f6e4; color: #0f766e; border-radius: 12px;
+        padding: 12px 16px; margin-bottom: 20px; font-size: 14px; font-weight: 600;
+      }
+      .form-success.show { display: flex; }
+
+      @media (max-width: 720px) {
+        .sidebar { display: none; }
+        .svc-row { flex-direction: column; align-items: flex-start; gap: 14px; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app">
+      <aside class="sidebar">
+        <div class="brand">
+          <div class="logo">Q</div>
+          <div>
+            <div class="brand-name">QueueSmart</div>
+            <div class="brand-sub">Smart Queue Management System</div>
+          </div>
+        </div>
+        <nav class="nav" id="nav"></nav>
+        <div class="side-foot">
+          <div class="avatar">AD</div>
+          <div>
+            <div class="avatar-name">Admin</div>
+            <div class="avatar-sub">Administrator</div>
+          </div>
+        </div>
+      </aside>
+
+      <div class="content">
+        <header class="topbar">
+          <div class="crumb" id="crumb">Admin Dashboard</div>
+          <button class="bell">
+            <span class="bell-dot"></span>
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor"
+              stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
+              <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" />
+            </svg>
+          </button>
+        </header>
+        <main class="main" id="main"></main>
+      </div>
+    </div>
+
+    <script src="js/validation.js"></script>
+    <script>
+      // Mock service data (no backend — Assignment 2)
+      let SERVICES = [
+        { id: "s1", name: "Passport Renewal", duration: 25, queueLength: 8, open: true },
+        { id: "s2", name: "Account Opening", duration: 15, queueLength: 3, open: true },
+        { id: "s3", name: "Tech Support", duration: 40, queueLength: 15, open: true },
+        { id: "s4", name: "Billing Inquiry", duration: 10, queueLength: 2, open: false },
+      ];
+
+      const NAV = [
+        { id: "dashboard", label: "Admin Dashboard",
+          icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>' },
+        { id: "service", label: "Service Management",
+          icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>' },
+      ];
+
+      const CLOCK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>';
+      const USERS = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>';
+      const CHECK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+
+      let state = { tab: "dashboard" };
+
+      function go(tab) { state.tab = tab; render(); }
+      function toggleService(id) {
+        const s = SERVICES.find((x) => x.id === id);
+        if (s) s.open = !s.open;
+        render();
+      }
+      window.go = go;
+      window.toggleService = toggleService;
+
+      function renderNav() {
+        document.getElementById("nav").innerHTML = NAV.map(
+          (n) => `<button class="nav-btn ${state.tab === n.id ? "on" : ""}" onclick="go('${n.id}')">${n.icon}<span>${n.label}</span></button>`
+        ).join("");
+        document.getElementById("crumb").textContent = NAV.find((n) => n.id === state.tab).label;
+      }
+
+      function dashboard() {
+        const rows = SERVICES.map((s) => `
+          <div class="svc-row">
+            <div class="svc-info">
+              <div class="svc-name">${s.name}</div>
+              <div class="svc-pills">
+                <span class="pill">${USERS} ${s.queueLength} in queue</span>
+                <span class="pill">${CLOCK} ~${s.duration}m each</span>
+              </div>
+            </div>
+            <div class="svc-actions">
+              <span class="status-tag ${s.open ? "status-open" : "status-closed"}">${s.open ? "Open" : "Closed"}</span>
+              <button class="toggle-btn" onclick="toggleService('${s.id}')">${s.open ? "Close queue" : "Open queue"}</button>
+            </div>
+          </div>`).join("");
+        return `<div class="page">
+          <h1>Admin Dashboard</h1>
+          <p class="sub">Manage services and monitor live queue lengths.</p>
+          <div class="section-label">Services</div>
+          <div class="svc-list">${rows}</div>
+        </div>`;
+      }
+
+      function serviceScreen() {
+        return `<div class="page">
+          <h1>Service Management</h1>
+          <p class="sub">Create or edit a service offered to users.</p>
+          <div class="form-card">
+            <div class="form-success" id="form-success">${CHECK}<span>Service saved successfully.</span></div>
+            <div class="form-summary" id="form-summary">
+              <strong>Please fix the following:</strong>
+              <ul id="form-summary-list"></ul>
+            </div>
+
+            <div class="field" id="f-name">
+              <label for="svc-name">Service Name <span class="char-count" id="name-count">0 / 100</span></label>
+              <input id="svc-name" type="text" maxlength="100" placeholder="e.g. Passport Renewal" />
+              <div class="field-error" id="e-name"></div>
+            </div>
+
+            <div class="field" id="f-desc">
+              <label for="svc-desc">Description</label>
+              <textarea id="svc-desc" placeholder="Describe what this service is for."></textarea>
+              <div class="field-error" id="e-desc"></div>
+            </div>
+
+            <div class="field" id="f-duration">
+              <label for="svc-duration">Expected Duration <span class="hint">(minutes)</span></label>
+              <input id="svc-duration" type="number" min="1" step="1" placeholder="e.g. 15" />
+              <div class="field-error" id="e-duration"></div>
+            </div>
+
+            <div class="field" id="f-priority">
+              <label for="svc-priority">Priority Level</label>
+              <select id="svc-priority">
+                <option value="">Select priority…</option>
+                <option value="low">Low</option>
+                <option value="medium">Medium</option>
+                <option value="high">High</option>
+              </select>
+              <div class="field-error" id="e-priority"></div>
+            </div>
+
+            <button class="primary" id="svc-save">Save service</button>
+          </div>
+        </div>`;
+      }
+
+      function wireServiceForm() {
+        const nameInput = document.getElementById("svc-name");
+        const count = document.getElementById("name-count");
+        nameInput.addEventListener("input", () => {
+          count.textContent = `${nameInput.value.length} / 100`;
+          clearServiceFieldError("f-name", "e-name");
+        });
+        ["svc-desc", "svc-duration", "svc-priority"].forEach((id) => {
+          const el = document.getElementById(id);
+          const map = { "svc-desc": ["f-desc", "e-desc"], "svc-duration": ["f-duration", "e-duration"], "svc-priority": ["f-priority", "e-priority"] };
+          el.addEventListener("input", () => clearServiceFieldError(map[id][0], map[id][1]));
+        });
+
+        document.getElementById("svc-save").addEventListener("click", () => {
+          const values = {
+            name: nameInput.value,
+            description: document.getElementById("svc-desc").value,
+            duration: document.getElementById("svc-duration").value,
+            priority: document.getElementById("svc-priority").value,
+          };
+
+          clearServiceFieldError("f-name", "e-name");
+          clearServiceFieldError("f-desc", "e-desc");
+          clearServiceFieldError("f-duration", "e-duration");
+          clearServiceFieldError("f-priority", "e-priority");
+          document.getElementById("form-summary").classList.remove("show");
+          document.getElementById("form-success").classList.remove("show");
+
+          const errors = validateServiceForm(values);
+
+          if (hasErrors(errors)) {
+            if (errors.name) showServiceFieldError("f-name", "e-name", errors.name);
+            if (errors.description) showServiceFieldError("f-desc", "e-desc", errors.description);
+            if (errors.duration) showServiceFieldError("f-duration", "e-duration", errors.duration);
+            if (errors.priority) showServiceFieldError("f-priority", "e-priority", errors.priority);
+
+            const list = document.getElementById("form-summary-list");
+            list.innerHTML = Object.values(errors).map((m) => `<li>${m}</li>`).join("");
+            document.getElementById("form-summary").classList.add("show");
+            return;
+          }
+
+          // Valid — add to mock list (no backend in Assignment 2)
+          SERVICES.push({
+            id: "s" + (SERVICES.length + 1),
+            name: values.name.trim(),
+            duration: Number(values.duration),
+            queueLength: 0,
+            open: true,
+          });
+          document.getElementById("form-success").classList.add("show");
+          document.getElementById("svc-name").value = "";
+          document.getElementById("svc-desc").value = "";
+          document.getElementById("svc-duration").value = "";
+          document.getElementById("svc-priority").value = "";
+          document.getElementById("name-count").textContent = "0 / 100";
+        });
+      }
+
+      function render() {
+        renderNav();
+        const views = { dashboard, service: serviceScreen };
+        document.getElementById("main").innerHTML = views[state.tab]();
+        if (state.tab === "service") wireServiceForm();
+      }
+      render();
+    </script>
+  </body>
+</html>
