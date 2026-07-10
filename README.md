@@ -139,6 +139,7 @@ The team will follow an **iterative, incremental development** process:
 ---
 
 ## Technology Stack
+(subject to change)
 
 | Layer | Technology |
 |-------|------------|
