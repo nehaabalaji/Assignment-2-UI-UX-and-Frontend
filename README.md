@@ -141,7 +141,7 @@ The team will follow an **iterative, incremental development** process:
 
 | Layer | Technology |
 |-------|------------|
-| Frontend | _e.g., React / React Native_ |
+| Frontend | HTML / CSS|
 | Backend | _e.g., Node.js / Express_ |
 | Database | _e.g., PostgreSQL / MongoDB_ |
 | Notifications | _e.g., Email service / in-app push_ |
