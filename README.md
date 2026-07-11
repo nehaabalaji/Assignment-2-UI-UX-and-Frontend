@@ -1,7 +1,5 @@
 # QueueSmart — Smart Queue Management Application
 
-**Assignment 1: Initial Thoughts and System Design (A1)**
-
 QueueSmart is a smart queue management application designed to reduce wait-time frustration and give organizations better tools to manage demand. This document presents the initial design: the problem, key features, development approach, and a high-level system architecture.
 
 ---
@@ -143,7 +141,7 @@ The team will follow an **iterative, incremental development** process:
 
 | Layer | Technology |
 |-------|------------|
-| Frontend | _e.g., React / React Native_ |
+| Frontend | HTML / CSS|
 | Backend | _e.g., Node.js / Express_ |
 | Database | _e.g., PostgreSQL / MongoDB_ |
 | Notifications | _e.g., Email service / in-app push_ |
